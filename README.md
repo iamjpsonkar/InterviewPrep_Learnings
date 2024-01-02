@@ -124,3 +124,43 @@ with concurrent.futures.ProcessPoolExecutor() as executor:
     executor.submit(print_numbers)
 ```
 
+# Backend Development
+
+## API Development
+
+### RESTful Principles:
+- **REST (Representational State Transfer)** is an architectural style for designing networked applications.
+- Key principles include stateless communication, resource identification, and uniform interfaces.
+
+### CRUD Operations:
+- CRUD stands for Create, Read, Update, and Delete, representing the basic operations for persistent storage.
+- [PrepDoc](https://github.com/iamjpsonkar/CRUD_Learnings/blob/main/README.md)
+###  Authentication and Authorization:
+- Authentication ensures that a user is who they claim to be.
+- Authorization determines the level of access a user has.
+- [Authentication and Authorization Document](https://github.com/iamjpsonkar/CRUD_Learnings/blob/main/README.md#authentication-and-authorization)
+
+## Optimization Techniques
+
+### Database Indexing:
+- Indexes improve the speed of data retrieval operations on a database table.
+- Common types include B-tree, hash, and full-text indexes.
+### Caching Strategies:
+- Caching involves storing copies of files or data in a location to serve future requests faster.
+- Techniques include in-memory caching, CDN caching, and browser caching.
+### Load Balancing:
+- Load balancing distributes incoming network traffic across multiple servers to ensure no single server is overwhelmed.
+
+## Transaction Management
+
+### ACID Properties:
+- ACID stands for Atomicity, Consistency, Isolation, and Durability, ensuring reliable database transactions.
+### Isolation Levels:
+- Isolation levels define the degree to which one transaction must be isolated from the effects of others.
+
+## Security Best Practices
+### Input Validation:
+- Validate and sanitize user input to prevent security vulnerabilities.
+### XSS and CSRF Prevention:
+- Cross-Site Scripting (XSS) and Cross-Site Request Forgery (CSRF) are common web application security vulnerabilities.
+
