@@ -246,7 +246,7 @@ if __name__ == '__main__':
 `pip install Flask Flask-WTF`
 
 ## Django
-### **Not Covering**
+[Django](https://github.com/iamjpsonkar/Django_learnings/blob/main/README.md)
 
 ## Sanic
 ### **Not Covering in Deep**
@@ -516,10 +516,6 @@ client.close()
 - **Process Management:**
   - Basic process management commands like ps, kill, top.
 
-### Content for Revision
-
-- Understand the structure of the Linux file system (/bin, /etc, /home, etc.).
-- Learn basic process management commands for monitoring and controlling processes.
 
 ## Docker
 
@@ -531,12 +527,57 @@ client.close()
 - **Docker Compose:**
   - Docker Compose simplifies multi-container application management.
 
+# Frontend Development
+## Web Development Basics
+[Web Development](https://github.com/iamjpsonkar/WebLearnings/blob/main/README.md)
+### HTML, CSS, JavaScript
+- HTML structures web content, CSS styles it and JavaScript adds interactivity.
+### Responsive Design
+- Designing websites to be accessible and functional on various devices.
+
+
+## Node.js
+[Node Learnings](https://github.com/iamjpsonkar/Nodejs_Learnings/blob/master/README.md)
+### Server-Side JavaScript
+- Node.js enables JavaScript to run on the server.
+### npm (Node Package Manager)
+- npm manages JavaScript packages and dependencies.
+
 ### Content for Revision
+- Understand the basics of server-side JavaScript with Node.js.
+- Explore npm commands for package management.
 
-- Understand containerization concepts and the advantages of using Docker.
-- Explore Docker Compose for managing multi-container applications.
+# AI/ML Development
+[AI/ML Development](https://github.com/iamjpsonkar/ML_Learnings/blob/master/README.md)
 
+## Machine Learning Concepts
 
+### Supervised and Unsupervised Learning
+- Supervised learning uses labeled data, unsupervised learning works with unlabeled data.
 
+### Regression, Classification, Clustering
+- Different types of machine learning tasks.
 
+## Data Science Basics
+
+### Data Cleaning, Exploration, Visualization
+- Preparing and exploring data before analysis.
+
+### Statistical Concepts
+- Understanding statistical measures and distributions.
+
+## Python for AI/ML
+
+### Libraries (NumPy, Pandas, Matplotlib, Scikit-learn)
+- Essential Python libraries for AI/ML tasks.
+
+### Jupyter Notebooks
+- Interactive computing for data analysis.
+
+# Data Structures and Algorithms
+[String Algorithms](https://github.com/iamjpsonkar/Algorithm_learnings/blob/main/README.md)
+[Data Structure and Algorithms](https://github.com/iamjpsonkar/DS_ALGO/blob/main/README.md)
+
+# System Design
+[System Design](https://github.com/iamjpsonkar/SystemDesign_Learnings/blob/master/README.md)
 
