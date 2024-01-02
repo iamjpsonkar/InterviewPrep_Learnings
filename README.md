@@ -164,3 +164,379 @@ with concurrent.futures.ProcessPoolExecutor() as executor:
 ### XSS and CSRF Prevention:
 - Cross-Site Scripting (XSS) and Cross-Site Request Forgery (CSRF) are common web application security vulnerabilities.
 
+# Web Frameworks
+
+## Flask
+
+### Routing and Views
+*Routing is the process of mapping URLs to functions in your Flask application. Views are the functions that handle the requests and generate responses.*
+
+```python
+from flask import Flask
+
+app = Flask(__name__)
+
+# Define a route
+@app.route('/')
+def home():
+    return 'Hello, this is the home page!'
+
+# Another route
+@app.route('/about')
+def about():
+    return 'This is the about page.'
+
+if __name__ == '__main__':
+    app.run(debug=True)
+```
+
+### Templates and Forms
+*Templates allow you to render dynamic content, and forms help manage user input.*
+```python
+from flask import Flask, render_template, request
+
+app = Flask(__name__)
+
+# Render HTML template
+@app.route('/')
+def home():
+    return render_template('home.html')
+
+# Handle form submission
+@app.route('/submit', methods=['POST'])
+def submit():
+    if request.method == 'POST':
+        username = request.form.get('username')
+        return f'Hello, {username}!'
+
+if __name__ == '__main__':
+    app.run(debug=True)
+```
+
+
+### Flask Extensions
+*Flask extensions enhance the functionality of your application. Here's an example using Flask-WTF for form handling.*
+
+```python
+from flask import Flask, render_template
+from flask_wtf import FlaskForm
+from wtforms import StringField, SubmitField
+
+app = Flask(__name__)
+app.config['SECRET_KEY'] = 'your_secret_key'
+
+# Define a form using Flask-WTF
+class MyForm(FlaskForm):
+    username = StringField('Username')
+    submit = SubmitField('Submit')
+
+# Route using the form
+@app.route('/form', methods=['GET', 'POST'])
+def form():
+    form = MyForm()
+    if form.validate_on_submit():
+        username = form.username.data
+        return f'Form submitted with username: {username}'
+    return render_template('form.html', form=form)
+
+if __name__ == '__main__':
+    app.run(debug=True)
+```
+
+`pip install Flask Flask-WTF`
+
+## Django
+### **Not Covering**
+
+## Sanic
+### **Not Covering in Deep**
+
+### Asynchronous Request Handlers
+*Sanic supports asynchronous request handlers, allowing you to write non-blocking, asynchronous code for improved performance.*
+
+```python
+from sanic import Sanic
+from sanic.response import text
+
+app = Sanic()
+
+# Asynchronous request handler
+@app.route('/')
+async def home(request):
+    return text('Hello, this is the home page!')
+
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', port=8000, debug=True, workers=4)
+```
+
+### Middleware
+*Middleware in Sanic allows you to process requests globally, providing a way to modify or handle requests before they reach the route handler.*
+
+```python
+from sanic import Sanic
+from sanic.response import text
+
+app = Sanic()
+
+# Middleware example
+async def custom_middleware(request):
+    print("This is executed for every request before reaching the route handler.")
+    return await request.next()
+
+app.register_middleware(custom_middleware)
+
+# Route handler
+@app.route('/')
+async def home(request):
+    return text('Hello, this is the home page!')
+
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', port=8000, debug=True, workers=4)
+```
+
+### Blueprints
+*Blueprints in Sanic help modularize your application by grouping related routes.*
+
+```python
+from sanic import Sanic
+from sanic import Blueprint
+from sanic.response import text
+
+app = Sanic()
+
+# Create a blueprint
+bp = Blueprint('my_blueprint')
+
+# Route within the blueprint
+@bp.route('/blueprint')
+async def blueprint_handler(request):
+    return text('This is a route in the blueprint.')
+
+# Register the blueprint with the app
+app.blueprint(bp)
+
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', port=8000, debug=True, workers=4)
+```
+
+# Database Management
+
+## SQL Databases
+### SQL Queries, Joins, Aggregations:
+- SQL queries retrieve and manipulate data, join and combine data from multiple tables, and aggregate data.
+### Indexing and Optimization:
+- Indexing involves creating indexes for faster query execution, and optimization ensures efficient database performance.
+
+## NoSQL Databases
+### Overview of MongoDB, Redis, etc.:
+- NoSQL databases like MongoDB and Redis offer alternatives to traditional relational databases.
+
+### MongoDB
+*MongoDB is a NoSQL database that stores data in a flexible, JSON-like format known as BSON (Binary JSON). It is designed to handle large amounts of unstructured or semi-structured data. MongoDB is classified as a document-oriented database, part of the NoSQL family, and is often used in web development as a backend database for applications.*
+
+#### Key Concepts
+- **Document**: A document is a basic unit of data in MongoDB, and it is a set of key-value pairs. Documents are similar to JSON objects and can contain arrays and other documents.
+    ```js
+    {
+        "_id": ObjectId("5fd7a7c2b4ae240d08f00b5a"),
+        "name": "John Doe",
+        "age": 30,
+        "email": "john.doe@example.com",
+        "address": {
+            "city": "New York",
+            "state": "NY",
+            "country": "USA"
+        }
+    }
+    ```
+
+- **Collection**: A collection is a grouping of MongoDB documents. It is equivalent to an RDBMS table. Collections don't enforce a schema, meaning documents within a collection can have different fields.
+
+- **Database**: MongoDB stores collections in databases. A single MongoDB server can host multiple databases, each with its own set of collections.
+
+#### Basic MongoDB Queries
+
+- Insert a Document
+```js
+db.users.insertOne({
+    "name": "Jane Doe",
+    "age": 25,
+    "email": "jane.doe@example.com",
+    "address": {
+        "city": "Los Angeles",
+        "state": "CA",
+        "country": "USA"
+    }
+})
+```
+
+- Find Documents
+```js
+// Find all documents in the 'users' collection
+db.users.find()
+
+// Find documents with a specific condition
+db.users.find({"age": {"$gt": 25}})
+```
+
+- Update Document
+```js
+// Update a document
+db.users.updateOne(
+    {"name": "John Doe"},
+    {"$set": {"age": 31}}
+)
+```
+
+- Delete Document
+```js
+// Delete a document
+db.users.deleteOne({"name": "Jane Doe"})
+```
+
+- Aggregation
+```js
+// Aggregate data (e.g., group by and calculate average)
+db.users.aggregate([
+    {"$group": {"_id": "$address.city", "average_age": {"$avg": "$age"}}}
+])
+```
+
+#### PyMongo
+```python
+from pymongo import MongoClient
+
+# Connect to MongoDB
+client = MongoClient("mongodb://localhost:27017/")  # Update with your MongoDB connection string
+database_name = "example_db"
+collection_name = "users"
+
+db = client[database_name]
+collection = db[collection_name]
+
+# Create Index (optional)
+collection.create_index("email", unique=True)
+
+# Insert Documents
+data_to_insert = [
+    {
+        "name": "John Doe",
+        "age": 30,
+        "email": "john.doe@example.com",
+        "address": {
+            "city": "New York",
+            "state": "NY",
+            "country": "USA"
+        }
+    },
+    {
+        "name": "Jane Doe",
+        "age": 25,
+        "email": "jane.doe@example.com",
+        "address": {
+            "city": "Los Angeles",
+            "state": "CA",
+            "country": "USA"
+        }
+    }
+]
+
+# Insert multiple documents
+collection.insert_many(data_to_insert)
+
+# Find Documents
+all_users = collection.find()
+
+for user in all_users:
+    print(user)
+
+# Query with a condition
+specific_users = collection.find({"age": {"$gt": 25}})
+print("\nUsers older than 25:")
+for user in specific_users:
+    print(user)
+
+# Update Document
+collection.update_one({"name": "John Doe"}, {"$set": {"age": 31}})
+
+# Delete Document
+collection.delete_one({"name": "Jane Doe"})
+
+# Close MongoDB Connection
+client.close()
+```
+
+## Database Design
+### Normalization and Denormalization:
+- Normalization organizes data to reduce redundancy, while denormalization simplifies data retrieval.
+### Entity-Relationship Diagrams (ERD):
+- ERDs visualize the relationships between entities in a database.
+
+# DevOps and Tools
+
+## Git
+
+### Concepts
+
+- **Branching, Merging, Resolving Conflicts:**
+  - Git allows branching for parallel development.
+  - Merging integrates changes.
+  - Conflict resolution manages conflicting changes.
+
+- **Gitflow Workflow:**
+  - Gitflow is a branching model that defines a strict branching strategy.
+
+### Content for Revision
+
+- Practice creating branches, merging branches, and resolving conflicts in Git.
+- Understand the Gitflow workflow for collaborative development.
+
+## Bash Scripting
+
+### Concepts
+
+- **Basic Commands:**
+  - Basic Linux commands for navigation, file manipulation, and system interaction.
+
+- **Scripting for Automation:**
+  - Writing Bash scripts to automate repetitive tasks.
+
+### Content for Revision
+
+- Review basic Linux commands (cd, ls, cp, mv, rm, mkdir, etc.).
+- Practice writing Bash scripts for automating tasks.
+
+## Linux
+
+### Concepts
+
+- **File System Structure:**
+  - Understanding the Linux file system hierarchy.
+
+- **Process Management:**
+  - Basic process management commands like ps, kill, top.
+
+### Content for Revision
+
+- Understand the structure of the Linux file system (/bin, /etc, /home, etc.).
+- Learn basic process management commands for monitoring and controlling processes.
+
+## Docker
+
+### Concepts
+
+- **Containerization Concepts:**
+  - Docker containers encapsulate applications and their dependencies for consistency across different environments.
+
+- **Docker Compose:**
+  - Docker Compose simplifies multi-container application management.
+
+### Content for Revision
+
+- Understand containerization concepts and the advantages of using Docker.
+- Explore Docker Compose for managing multi-container applications.
+
+
+
+
+
