@@ -76,6 +76,28 @@ def myfun(a,b,c):
 myfun(a=1,b=2,c=3)
 ```
 
+#### Passing arguments to wrapper
+```python
+def wrapper(*wrapper_args):
+    def decorator(func):
+        def inner(*args, **kwargs):
+            print("before function call")
+            print("Values passed to wrapper:", wrapper_args)
+            return_values = func(*args, **kwargs)
+            print("after function call")
+            return return_values
+        return inner
+    return decorator
+
+@wrapper(23, 45)
+def myfun(a, b, c):
+    print("printing ", a, b, c)
+    return a + b, b + c
+
+myfun(a=1, b=2, c=3)
+```
+
+
 ### Exception Handling
 ```python
 try:
