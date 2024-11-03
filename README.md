@@ -1917,3 +1917,214 @@ query {
 
 - **GraphQL** is highly efficient for complex data-fetching needs with flexible response structures and is commonly used in microservices and mobile applications.
 - **REST** is simpler to implement and is highly suited for resource-driven applications where data requirements are more static.
+
+
+## https://www.turing.com/interview-questions/docker
+
+
+### What is the difference between a container and a virtual machine?
+
+**Answer:**  
+A container is an isolated and lightweight runtime environment that shares the host system's OS kernel, libraries, and resources. It provides process-level isolation and allows applications to run consistently across different environments.
+
+On the other hand, a virtual machine is a complete and independent OS installation running on virtualized hardware, providing full isolation and running multiple instances of OS and applications.
+
+Here’s a deeper look at the main differences between containers and virtual machines (VMs):
+
+| Feature                   | Container                                                                                             | Virtual Machine                                                                                       |
+|---------------------------|------------------------------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------|
+| **Isolation Level**       | Process-level isolation, sharing the host OS kernel.                                                 | Full OS-level isolation with a separate OS kernel for each VM.                                        |
+| **Resource Usage**        | Lightweight and shares OS resources; smaller size since it uses the host OS libraries.               | More resource-intensive; requires its own OS, consuming more memory and storage.                      |
+| **Boot Time**             | Very fast (seconds or less) due to minimal OS overhead.                                              | Slower (minutes) due to the need to boot a full OS.                                                   |
+| **Consistency**           | Ensures application consistency across environments by packaging dependencies with the application.  | Provides full isolation and consistency but may have differences due to separate OS environments.      |
+| **Use Cases**             | Ideal for microservices, CI/CD, and lightweight, scalable apps.                                      | Suitable for running multiple different OSes and for applications needing strong isolation and security. |
+| **Deployment**            | Easier to deploy, requiring less infrastructure.                                                     | Complex deployment with hypervisors, suitable for isolated environments.                              |
+| **Examples**              | Docker, Kubernetes, Podman.                                                                          | VMware, VirtualBox, Hyper-V.                                                                          |
+
+In summary, **containers** are lightweight and efficient for consistent app deployment and scalability, while **VMs** provide stronger isolation, useful for running diverse OSes or fully isolated environments.
+
+
+## GenAI Pipelines
+"At Fynd, we use API specifications (Swagger) as documentation to help developers understand request and response schemas for our APIs. While the initial Swagger documentation was functional, it had several issues, including missing descriptions for attributes and APIs. To address these, I developed a GenAI pipeline that automatically detects and fills in missing descriptions.
+
+This pipeline leverages dynamic prompt selection and uses cosine similarity as a metric to compare existing descriptions and suggest new ones. To further enhance accuracy, I implemented multi-chain prompting, allowing the pipeline to refine responses in multiple stages. This approach has significantly improved the quality and completeness of our API documentation."
+
+## RAG-based chatbot for JioMart  (Retrieval-Augmented Generation (RAG))
+We had a requirement to simplify the resolution process for both users and sellers by addressing common issues through an AI chatbot. Although a customer service team was available, we wanted to filter out simpler queries to improve efficiency.
+
+To achieve this, we leveraged over 10,000 historical queries and their resolutions stored in our database. We converted this textual data into embeddings to enhance response relevance. For each user query, the system retrieves the top 5 most relevant responses from the embeddings, then utilizes GPT-3 to generate the most accurate and contextually appropriate answer.
+
+## Fynix at Fynd
+
+"To enhance our CI/CD process, we identified the need for an AI-based code reviewer to detect common semantic and syntax errors. To achieve this, we created templates enforcing guidelines, such as requiring handlers to be in class format, ensuring attributes are accessed within try-except blocks with appropriate exceptions, and verifying variable declarations to avoid semantic and syntactic issues.
+
+We leveraged data from past PR comments and their resolutions, embedding this data to build a knowledge base. For new PRs, we first use Pylint for basic syntax checks. Then, we input the code snippet along with the embedded PR comments, retrieving the top 5 relevant comments. These comments, combined with GPT-3, generate contextual feedback for the new PR.
+
+Using GitHub APIs, we post the comments and provide a summary for the PR. The process is triggered by GitHub webhooks, which activate the AI agent for each new PR submission."
+
+
+
+
+
+# Resume based question and answers
+
+## Background & Experience
+
+### Could you walk me through your professional journey, focusing on your time at Fynd and TCS?
+"I began my professional journey at Tata Consultancy Services (TCS) in October 2020 as a System Engineer in the Digital Band. During my time at TCS, I collaborated with a team focused on Ericsson Telecom projects, where I had the opportunity to learn and contribute extensively. One of my key accomplishments was developing a LogViewer tool for Ericsson, designed to process and analyze massive telecom logs—often exceeding 50,000 lines—making it easier for the team to monitor and troubleshoot issues efficiently. Over the course of more than two years at TCS, I consistently demonstrated my technical skills and made a meaningful impact.
+
+In December 2022, I transitioned to Fynd, Shopsense Retail Technologies Limited, as a Software Development Engineer (SDE 1) to further my career growth. At Fynd, my primary focus has been on the payments team, working closely with Jio and Fynd platforms. Here, I have successfully completed multiple integrations like JioOnePay, Razorpay and developed features that enhance the overall payment experience."
+
+
+### In your current role at Fynd, what were some of the most challenging aspects of working on the Payments and Refunds system, and how did you overcome them?
+
+"If I were to discuss the most challenging task I faced, it would be the integration of Pyfit with AIOKafka and AIORedis. This task was originally assigned to another developer who was on their notice period. Unfortunately, they left the organization before completing the integration, and I did not receive a knowledge transfer for the partially completed work. With the deadline approaching and no transition documentation, I had to quickly familiarize myself with the incomplete code and understand the requirements on my own. This situation added significant pressure, as I was responsible for both understanding and completing the integration under tight timelines."
+
+
+
+### You contributed to Fynix, an AI agent for code reviews. Could you elaborate on how this project was developed and what specific improvements it brought to code quality?
+Fynix is an AI agent, that review the new PRs, that helps a lot for a faster CI/CD. We have used previous PRs comments and resolution and their embedding to get the top 5 comments for new PR based on the code changes, and then used gpt 3 to get the feedback for the new PR.
+Now, this helps other developer as first level review is done, now only the specific task related feedback needs to be submitted.
+
+
+## Technical Skills & Projects
+
+### Your resume highlights a strong foundation in Python. Could you describe a project where your Python expertise was crucial to the project’s success?
+Many of the projects I've worked on are Python-based, but one standout is the tool I developed, `JaySoft:PED_tool`. This tool was unique because it functioned as a proxy server with the ability to dynamically mock any API.
+
+I developed this tool specifically to test a card-related feature at Fynd. The challenge was that the required API for testing was only accessible with live credentials, which limited our ability to test in a development environment. To address this, I used my Python skills to create a proxy server that could simulate the live API responses, allowing us to develop and test the feature seamlessly without requiring live access.
+
+
+### You have experience with GenAI and LangChain. How have you applied these tools in your work, and what outcomes did they help achieve?
+
+I have leveraged my GenAI skills and knowledge of the LangChain framework to contribute to several impactful projects at Fynd. One of my significant contributions was to Fynix, an AI agent designed to assist with pull request (PR) reviews. This agent has greatly reduced the manual effort required from developers by automating the review process and providing a second layer of verification.
+
+Additionally, I contributed to the development of an AI chatbot for JioMart, which addresses users' initial queries, enhancing the overall customer support experience. Furthermore, I created AI pipelines that automate the correction of existing Swagger files, significantly decreasing the development effort involved in maintaining accurate API documentation, which was previously a completely manual task.
+
+These implementations have streamlined workflows, improved accuracy, and allowed our development team to focus more on strategic tasks rather than repetitive manual processes.
+
+
+### Tell us more about the "UPI At Store" feature you pioneered at Fynd. How did you approach this project, and what specific challenges did you face in developing a multi-mode payment system?
+
+The UPI At Store feature has become one of the most popular offerings on the Fynd platform. As an omnichannel solution, Fynd supports in-store applications for various merchants. Previously, if a customer paid through UPI, the payment was received directly by the seller through their personal QR code, and the transaction was recorded as cash-on-delivery (COD). However, this manual process limited our ability to track UPI payments and complicated the refund process.
+
+With this feature, stores now have the option to display a dynamic Razorpay QR code generated by our backend, allowing UPI payments to be recorded accurately as UPI_AS (UPI At Store) rather than COD. This enhancement has improved transaction tracking and streamlined refunds, as they are now automated.
+
+For the multi-mode payment feature, customers can split payments across different methods. We integrated Jio Payment Gateway (Jio PG) for this, enabling us to collect payments across modes and receive a consolidated payment event. Our backend then apportions the amount accurately at the article level. This multi-mode functionality has added flexibility for users and expanded the payment options available on Fynd.
+
+
+## API Development & Integration
+
+### You mentioned enhancing APIs with a 98% uptime and faster response times. Could you share your approach to maintaining API reliability and performance at this scale?
+
+This improvement was part of my work on the maintenance team, where our main goal was to optimize the system and reduce errors. Using Grafana for monitoring API latency and uptime, along with Sentry and PagerDuty for issue alerts, and Coralogix for log management, I closely analyzed API performance and identified areas for improvement.
+
+Based on these insights, I implemented several key changes that led to significant performance gains. Before these optimizations, Sentry alerts often reached three digits, but after my updates, they were consistently in single digits. Some of the enhancements I made include:
+
+Error Handling: Implemented try-except blocks when accessing attributes to ensure proper error handling and raise specific exceptions as needed.
+Database Optimization: Improved query performance and optimized session management to reduce database load and response times.
+Query Refinement: Replaced multiple instances of cross joins with inner joins, reducing unnecessary data retrieval and improving query efficiency.
+These efforts collectively increased API reliability and response times, helping us achieve 98% uptime and faster, more consistent performance across the platform.
+
+
+### Your experience with integrations like Razorpay’s partnership model seems comprehensive. What were the key steps you followed to ensure secure and compliant integration, especially under RBI guidelines?
+
+Razorpay's partnership model is designed to allow merchants to receive payouts without sharing their actual API keys and secrets, aligning with RBI guidelines for secure transactions. This feature enables merchants to generate a limited-access token, which they can share with us to control and monitor API calls made on their behalf.
+
+To implement this securely, I took several key steps:
+
+- **Token-Based Access**: Merchants provided us with a limited-access token instead of full API credentials, ensuring that they retained control over their API interactions.
+- **API Call Tracking**: This setup allowed us to track all API calls made using the token, providing a clear audit trail for security and compliance purposes.
+- **Automatic Token Renewal**: Since the tokens have a default expiry of 3 months, I incorporated an automatic renewal process using a refresh token to prevent disruptions in service while maintaining security.
+
+These measures ensured a secure, compliant integration that met RBI guidelines, provided transaction transparency, and reduced risk for both our platform and merchants.
+
+
+## Open Source & Freelance Contributions
+
+### You've developed a range of personal projects. What inspired these projects, and which ones are you most proud of?
+I'm passionate about coding and love working on new ideas in my free time, especially on weekends. It started as a hobby, where I'd explore new tools and technologies, and it's been incredibly rewarding.
+
+One of my earliest projects was a simple music player app, which I built using Pygame and some basic knowledge of audio processing. Although much of it was inspired by a YouTube tutorial, creating it myself was a significant accomplishment and sparked my motivation to continue building.
+
+The projects I'm most proud of are:
+- **JaySoft: JS_Code**: This tool enables users to run Python code and share it with others easily. It's a streamlined, web-based IDE for collaborative coding.
+
+- **JaySoft: PED_tool**: This tool supports data encryption and decryption and includes both a proxy server and a mock server feature, making it versatile for various development and testing needs.
+
+These projects allowed me to deepen my understanding of Python and experiment with practical applications, which I found both enjoyable and educational.
+
+
+### In your GitHub projects, you focus on user tools like a text editor and a Python IDE. How do you ensure usability and functionality in the tools you develop?
+I had developed `JaySoft: JSText` in my 3rd year of btech, I had devloped this due to curiosity as I was typing someting over my microsoft notepad and then I wanted to know, how this imple microsoft app works.
+However the Python IDE, that I developed was due to code sharing with friends, so I devloped this in covid time to share my code with my friends securily. Now to share it with wider audience I have added this to product hunt, where it is now in public and anyone can use it.
+
+
+## Problem Solving & Algorithms
+
+### Your background includes solving over 700 DSA problems and participating in ACM-ICPC. How has this experience in algorithms influenced your work as a backend engineer?
+Participating in ACM-ICPC and solving over 700 data structures and algorithms (DSA) problems has significantly enhanced my logical thinking and problem-solving skills. As a backend engineer, I regularly encounter challenges that require me to optimize API latency and leverage my debugging skills to resolve issues effectively.
+
+For instance, when dealing with tasks that require dynamic and rapid payment processing, I have applied sorting algorithms to optimize the operations involved. This experience has equipped me to develop efficient solutions that improve performance and ensure smooth user experiences.
+
+### Can you discuss a time when you used your problem-solving skills to resolve a significant issue on the job?
+Certainly! One significant task I encountered involved dynamically apportioning payment amounts based on the selected method of payment (MOP), user eligibility, and applied coupons at the article level.
+
+To address this challenge, I applied my problem-solving skills to develop a comprehensive function that minimized the use of if-else statements, replacing a complex ladder structure with a more streamlined approach. This function efficiently computes and sorts the payment apportioning in real time.
+
+As a result, we were able to significantly reduce payment completion times and implement a database-controlled apportioning system, improving both efficiency and user satisfaction.
+
+## Team Collaboration & Communication
+
+### In your resume, you mentioned collaborating with the JioMart and payment extension teams. How do you ensure effective communication and teamwork across different departments and partners?
+
+This year, we developed a comprehensive JioMart platform, which is currently in pre-production and is expected to launch next year. This project involved significant enhancements to our codebase, requiring extensive collaboration with the JioMart team.
+
+To ensure effective communication and teamwork, we hold a weekly meeting where all team members discuss any challenges they are facing. Additionally, we conduct a daily meeting where a senior member leads the discussion, allowing anyone with issues to join and seek resolutions. 
+
+We also utilize engineering documentation and Figma to facilitate collaboration between the teams, ensuring everyone is aligned and informed throughout the development process.
+
+
+### How do you balance technical tasks with collaborative efforts, especially when developing solutions that involve both backend development and AI-driven customer support tools?
+
+In these scenarios, I begin by utilizing a proxy server and mock services that I developed to create a backend-ready platform. This allows us to simulate interactions while we focus on building the AI-driven application using our mocked server. Once the AI components are fully developed and tested, we proceed to finalize the API. This approach enables a seamless integration process, ensuring that both technical tasks and collaborative efforts are effectively balanced throughout the project.
+
+
+
+## Future Aspirations
+
+### Looking ahead, are there specific areas within backend engineering, AI, or GenAI that you’re excited to explore further?
+
+I am particularly excited about building an AI-driven solution for resume creation. This project aims to leverage machine learning algorithms to generate personalized resumes that cater to individual strengths and experiences. I believe this can significantly streamline the job application process for users, making it easier for them to present themselves effectively.
+
+### How do you envision your career evolving over the next few years, and what skills do you hope to develop?
+
+Over the next few years, I envision my career evolving towards a more specialized focus on generative AI principles and applications. I aim to deepen my understanding of AI algorithms and their practical implementations, particularly in developing innovative solutions that enhance user experiences. Additionally, I plan to improve my skills in data analysis and machine learning frameworks to ensure I can contribute effectively to cutting-edge projects in this rapidly advancing field.
+
+
+
+```
+Fynix, is an AI agent that helps in code review at fynd. I was asked to help for reviewing the code reviews for payment repository.
+
+
+
+It's accuracy is upto 80-85% for any repo, but for fynd it may go upto 95%.
+We have written dynamic prompts for Class Based structures instead of functions for API Handlers, Using decorators for security. All the problems like syntax, etc.
+
+Used Cosine Simillarity, for dynamic propmt selection.
+multi chain prompting.
+
+I had written, dynamic selection prompts for the agent, where I mostly 
+
+Requirements gathering:
+
+
+RAG Based chatbots:
+We have more than 6000 queries and response data in textual format, dataset.
+
+We have used huuging face embedding technique `all-MiniLM-L6-v2` to convert our textual data into vector DB: chroma DB.
+
+"Give the responsed based on the generated DB, don't include extra response"
+
+cross question interview
+```
