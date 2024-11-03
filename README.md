@@ -1,5 +1,14 @@
 [DOC links](https://github.com/DopplerHQ/awesome-interview-questions)
 
+
+# Common Questions
+
+## Tell me something about yourself
+My name is Jay Prakash Sonkar, and I am a software developer with over four years of experience. I have built numerous applications and possess a solid understanding of the end-to-end development process. I greatly enjoy building applications, some of which are utilized by multiple users, such as a web IDE and proxy servers.
+- `WEB IDE`: Enables user to write execute and share code with anyone.
+- `Proxy Server`: is a pre-ready server, which helps developers to develop anything efficiently and smoothly.
+
+
 # Python Programming
 
 ## Syntax and Basics
