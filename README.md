@@ -1,4 +1,24 @@
-[DOC links](https://github.com/DopplerHQ/awesome-interview-questions)
+# Software Engineering Interview Prep
+
+A concise revision guide for Python and backend-focused software engineering
+interviews. Each section supports three kinds of preparation: explain the
+concept, demonstrate it with a small example, and discuss its trade-offs.
+
+## Contents
+
+- [Python programming](#python-programming)
+- [Backend development](#backend-development)
+- [Web frameworks](#web-frameworks)
+- [Database management](#database-management)
+- [DevOps and tools](#devops-and-tools)
+- [Frontend development](#frontend-development)
+- [AI/ML development](#aiml-development)
+- [Data structures and algorithms](#data-structures-and-algorithms)
+- [System design](#system-design)
+- [Interview practice loop](#interview-practice-loop)
+
+For a larger question bank, see
+[Awesome Interview Questions](https://github.com/DopplerHQ/awesome-interview-questions).
 
 # Python Programming
 
@@ -59,21 +79,30 @@ print("Second Value:", second_value)
 ```
 
 ### Decorators
+
+Decorators wrap callables to add behavior without changing their implementation.
+Use `functools.wraps` so introspection and debugging retain the wrapped
+function's original metadata.
+
 ```python
-def wrapper(func,*args,**kwargs):
+from functools import wraps
+
+
+def trace_call(func):
+    @wraps(func)
     def inner(*args, **kwargs):
-        print("before function call")
-        return_values = func(*args,**kwargs)
-        print("after function call")
-        return return_values
+        print(f"calling {func.__name__}")
+        return func(*args, **kwargs)
+
     return inner
 
-@wrapper
-def myfun(a,b,c):
-    print("printing ",a,b,c)
-    return a+b,b+c
 
-myfun(a=1,b=2,c=3)
+@trace_call
+def add(left, right):
+    return left + right
+
+
+print(add(2, 3))
 ```
 
 ### Exception Handling
@@ -90,7 +119,7 @@ with open("example.txt", "r") as file:
     content = file.read()
 ```
 
-### Closures Functions
+### Closure Functions
 ```python
 def outer_function(x):
     def inner_function(y):
@@ -104,67 +133,102 @@ closure_result = closure_example(closure_result)
 print(closure_result)
 ```
 
-### Lambda Functions 
+### Lambda Functions
 ```python
 square = lambda x: x**2
 ```
 
-### Concurrency and Parallelism [No IDEA]
+### Concurrency and Parallelism
+
+- **Concurrency** makes progress on multiple tasks during overlapping periods.
+  Threads are often useful for I/O-bound work.
+- **Parallelism** executes tasks at the same instant. Processes can bypass
+  CPython's GIL for CPU-bound work, at the cost of serialization and process
+  overhead.
+
 ```python
 import concurrent.futures
 
-# Concurrency with Threads
-def print_numbers():
-    for i in range(5):
-        print(i)
+def square(number):
+    return number * number
 
 with concurrent.futures.ThreadPoolExecutor() as executor:
-    executor.submit(print_numbers)
+    results = list(executor.map(square, range(5)))
 
-# Parallelism with Processes
-with concurrent.futures.ProcessPoolExecutor() as executor:
-    executor.submit(print_numbers)
+print(results)
+
+# Process pools must be created behind this guard on spawn-based platforms.
+if __name__ == "__main__":
+    with concurrent.futures.ProcessPoolExecutor() as executor:
+        results = list(executor.map(square, range(5)))
 ```
 
 # Backend Development
 
 ## API Development
 
-### RESTful Principles:
+### RESTful Principles
+
 - **REST (Representational State Transfer)** is an architectural style for designing networked applications.
 - Key principles include stateless communication, resource identification, and uniform interfaces.
 
-### CRUD Operations:
+Use nouns for resources (`/users/42`), HTTP methods for actions, meaningful
+status codes, and idempotency where the method promises it. `GET` must be safe,
+while repeated `PUT` and `DELETE` requests should have the same intended effect
+as one request.
+
+### CRUD Operations
+
 - CRUD stands for Create, Read, Update, and Delete, representing the basic operations for persistent storage.
 - [PrepDoc](https://github.com/iamjpsonkar/CRUD_Learnings/blob/main/README.md)
-###  Authentication and Authorization:
+
+### Authentication and Authorization
+
 - Authentication ensures that a user is who they claim to be.
 - Authorization determines the level of access a user has.
 - [Authentication and Authorization Document](https://github.com/iamjpsonkar/CRUD_Learnings/blob/main/README.md#authentication-and-authorization)
 
 ## Optimization Techniques
 
-### Database Indexing:
+### Database Indexing
+
 - Indexes improve the speed of data retrieval operations on a database table.
 - Common types include B-tree, hash, and full-text indexes.
-### Caching Strategies:
+- Indexes consume storage and make writes more expensive, so choose them from
+  measured query patterns and verify them with the database query planner.
+
+### Caching Strategies
+
 - Caching involves storing copies of files or data in a location to serve future requests faster.
 - Techniques include in-memory caching, CDN caching, and browser caching.
-### Load Balancing:
+- Be ready to explain cache-aside, TTL selection, invalidation, stampede
+  prevention, and the consistency trade-off introduced by stale data.
+
+### Load Balancing
+
 - Load balancing distributes incoming network traffic across multiple servers to ensure no single server is overwhelmed.
 
 ## Transaction Management
 
-### ACID Properties:
+### ACID Properties
+
 - ACID stands for Atomicity, Consistency, Isolation, and Durability, ensuring reliable database transactions.
-### Isolation Levels:
+
+### Isolation Levels
+
 - Isolation levels define the degree to which one transaction must be isolated from the effects of others.
+- Typical SQL levels are read uncommitted, read committed, repeatable read, and
+  serializable. Stronger isolation prevents more anomalies but can reduce
+  concurrency; exact guarantees vary by database.
 
 ## Security Best Practices
 ### Input Validation:
 - Validate and sanitize user input to prevent security vulnerabilities.
 ### XSS and CSRF Prevention:
 - Cross-Site Scripting (XSS) and Cross-Site Request Forgery (CSRF) are common web application security vulnerabilities.
+- Prevent XSS with contextual output encoding and a restrictive Content Security
+  Policy. Prevent CSRF with same-site cookies and anti-CSRF tokens for
+  state-changing cookie-authenticated requests.
 
 # Web Frameworks
 
@@ -189,6 +253,7 @@ def about():
     return 'This is the about page.'
 
 if __name__ == '__main__':
+    # The development server is not suitable for production traffic.
     app.run(debug=True)
 ```
 
@@ -251,7 +316,10 @@ if __name__ == '__main__':
 [Django](https://github.com/iamjpsonkar/Django_learnings/blob/main/README.md)
 
 ## Sanic
-### **Not Covering in Deep**
+### Scope
+
+This section is an overview; focus on how async request handling, middleware,
+and blueprints differ from synchronous Flask applications.
 
 ### Asynchronous Request Handlers
 *Sanic supports asynchronous request handlers, allowing you to write non-blocking, asynchronous code for improved performance.*
@@ -280,12 +348,10 @@ from sanic.response import text
 
 app = Sanic()
 
-# Middleware example
+# Request middleware example
+@app.middleware("request")
 async def custom_middleware(request):
     print("This is executed for every request before reaching the route handler.")
-    return await request.next()
-
-app.register_middleware(custom_middleware)
 
 # Route handler
 @app.route('/')
@@ -324,14 +390,30 @@ if __name__ == '__main__':
 # Database Management
 
 ## SQL Databases
-### SQL Queries, Joins, Aggregations:
+### SQL Queries, Joins, and Aggregations
+
 - SQL queries retrieve and manipulate data, join and combine data from multiple tables, and aggregate data.
-### Indexing and Optimization:
+
+```sql
+SELECT department_id, COUNT(*) AS employee_count
+FROM employees
+WHERE active = TRUE
+GROUP BY department_id
+HAVING COUNT(*) >= 5
+ORDER BY employee_count DESC;
+```
+
+### Indexing and Optimization
+
 - Indexing involves creating indexes for faster query execution, and optimization ensures efficient database performance.
 
 ## NoSQL Databases
-### Overview of MongoDB, Redis, etc.:
+### Overview of MongoDB and Redis
+
 - NoSQL databases like MongoDB and Redis offer alternatives to traditional relational databases.
+- MongoDB is a document database; Redis is primarily an in-memory data-structure
+  store. They solve different problems and should not be treated as
+  interchangeable general-purpose databases.
 
 ### MongoDB
 *MongoDB is a NoSQL database that stores data in a flexible, JSON-like format known as BSON (Binary JSON). It is designed to handle large amounts of unstructured or semi-structured data. MongoDB is classified as a document-oriented database, part of the NoSQL family, and is often used in web development as a backend database for applications.*
@@ -469,9 +551,12 @@ client.close()
 ```
 
 ## Database Design
-### Normalization and Denormalization:
+### Normalization and Denormalization
+
 - Normalization organizes data to reduce redundancy, while denormalization simplifies data retrieval.
-### Entity-Relationship Diagrams (ERD):
+
+### Entity-Relationship Diagrams (ERD)
+
 - ERDs visualize the relationships between entities in a database.
 
 # DevOps and Tools
@@ -577,9 +662,39 @@ client.close()
 - Interactive computing for data analysis.
 
 # Data Structures and Algorithms
+
 [String Algorithms](https://github.com/iamjpsonkar/Algorithm_learnings/blob/main/README.md)
+
 [Data Structure and Algorithms](https://github.com/iamjpsonkar/DS_ALGO/blob/main/README.md)
 
 # System Design
+
 [System Design](https://github.com/iamjpsonkar/SystemDesign_Learnings/blob/master/README.md)
+
+# Interview Practice Loop
+
+Use this loop for each topic rather than only rereading notes:
+
+1. **Recall:** explain the topic from memory in two minutes.
+2. **Apply:** write a small example without copying the guide.
+3. **Probe:** answer one failure-mode or trade-off question.
+4. **Review:** record the missing detail and revisit it after one day, one week,
+   and one month.
+
+For coding questions, first clarify constraints, state the brute-force approach,
+derive the optimized approach, test edge cases aloud, and finish with time and
+space complexity. For system-design questions, establish requirements and scale
+before choosing components; then cover data flow, failure modes, observability,
+security, and trade-offs.
+
+## Repository Checks
+
+Run the dependency-free documentation validator before committing changes:
+
+```bash
+python3 scripts/validate_docs.py
+```
+
+It validates Markdown fence balance, Python examples, local links, and notebook
+structure and code syntax.
 
