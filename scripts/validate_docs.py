@@ -11,7 +11,6 @@ from pathlib import Path
 
 
 ROOT = Path(__file__).resolve().parents[1]
-NOTEBOOK = ROOT / "README.ipynb"
 FENCE = re.compile(r"^```(?P<language>[\w+-]*)\s*$")
 LOCAL_LINK = re.compile(r"\[[^]]+\]\((?!https?://|#|mailto:)([^)]+)\)")
 
@@ -56,30 +55,33 @@ def validate_markdown(path: Path) -> list[str]:
     return errors
 
 
-def validate_notebook() -> list[str]:
+def validate_notebook(path: Path, *, require_clean_outputs: bool = False) -> list[str]:
     errors: list[str] = []
+    display_path = path.relative_to(ROOT)
     try:
-        notebook = json.loads(NOTEBOOK.read_text(encoding="utf-8"))
+        notebook = json.loads(path.read_text(encoding="utf-8"))
     except (OSError, json.JSONDecodeError) as exc:
-        return [f"README.ipynb: cannot read notebook: {exc}"]
+        return [f"{display_path}: cannot read notebook: {exc}"]
 
     if notebook.get("nbformat") != 4:
-        errors.append("README.ipynb: expected notebook format 4")
+        errors.append(f"{display_path}: expected notebook format 4")
 
     if not isinstance(notebook.get("cells"), list):
-        return [*errors, "README.ipynb: cells must be a list"]
+        return [*errors, f"{display_path}: cells must be a list"]
 
     for index, cell in enumerate(notebook.get("cells", [])):
         if cell.get("cell_type") != "code":
             continue
         source = "".join(cell.get("source", []))
         try:
-            ast.parse(source, filename=f"README.ipynb:cell-{index + 1}")
+            ast.parse(source, filename=f"{display_path}:cell-{index + 1}")
         except SyntaxError as exc:
-            errors.append(f"README.ipynb:cell-{index + 1}: invalid Python: {exc.msg}")
+            errors.append(f"{display_path}:cell-{index + 1}: invalid Python: {exc.msg}")
 
-        if cell.get("execution_count") is not None or cell.get("outputs"):
-            errors.append(f"README.ipynb:cell-{index + 1}: clear outputs before committing")
+        if require_clean_outputs and (
+            cell.get("execution_count") is not None or cell.get("outputs")
+        ):
+            errors.append(f"{display_path}:cell-{index + 1}: clear outputs before committing")
 
     return errors
 
@@ -87,7 +89,13 @@ def validate_notebook() -> list[str]:
 def main() -> int:
     errors = [
         *(error for path in ROOT.glob("*.md") for error in validate_markdown(path)),
-        *validate_notebook(),
+        *(
+            error
+            for path in ROOT.glob("*.ipynb")
+            for error in validate_notebook(
+                path, require_clean_outputs=path.name == "README.ipynb"
+            )
+        ),
     ]
     if errors:
         print("Documentation validation failed:", file=sys.stderr)
